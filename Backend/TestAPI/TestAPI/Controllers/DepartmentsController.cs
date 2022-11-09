@@ -33,26 +33,29 @@ namespace TestAPI.Controllers
 
         // POST api/<DepartmentsController>
         [HttpPost]
-        public async Task Post([FromBody] Department department)
+        public async Task<JsonResult> Post(Department department)
         {
             await db.Departments.AddAsync(department);
             await db.SaveChangesAsync();
+            return new JsonResult("Added successfully");
         }
 
         // PUT api/<DepartmentsController>/5
         [HttpPut]
-        public async Task Put([FromBody] Department department)
+        public async Task<JsonResult> Put([FromBody] Department department)
         {
-             db.Entry(department).State = EntityState.Modified;
+            db.Entry(department).State = EntityState.Modified;
             await db.SaveChangesAsync();
+            return new JsonResult("Updated successfully");
         }
 
         // DELETE api/<DepartmentsController>/5
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async Task<JsonResult> Delete(Guid id)
         {
-            db.Departments.Remove(await db.Departments.FirstAsync(id));
+            db.Departments.Remove(await db.Departments.FindAsync(id));
             await db.SaveChangesAsync();
+            return new JsonResult("Deleted successfully");
         }
     }
 }
